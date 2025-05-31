@@ -39,7 +39,7 @@ else:
             user_dashboard.show()
         elif menu == "Laporan":
             user_laporan.show()
-        elif menu == "Manajemen User":
+        elif menu == "Katalog":
             user_katalog.show()
         elif menu == "Settings":
             user_settings.show()

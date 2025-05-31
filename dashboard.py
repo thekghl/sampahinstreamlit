@@ -1,32 +1,53 @@
 import streamlit as st
-from db import get_connection
+from login import login_form
+from admin_pages import admin_laporan, admin_manajemen_user, admin_settings
+from pages import user_katalog, user_dashboard, user_laporan, user_settings
 
-def check_login(username, password, role):
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
+if "loginstate" not in st.session_state:
+    st.session_state.loginstate = False
+
+if not st.session_state.loginstate:
+    login_form()
+else:
+    user = st.session_state.get("user", {})
+    role = st.session_state.get("role", "")
+
+    st.logo("data/geming.png", size="large")
+    st.title("Dashboard Sampahin")
+    st.success(f"Welcome, {user.get('nama_admin') if role == 'Admin' else user.get('nama_user', '')}!")
+
+    # Sidebar navigation based on role
     if role == "Admin":
-        cursor.execute("SELECT * FROM admin WHERE Username=%s AND Password=%s", (username, password))
+        menu = st.sidebar.radio(
+            "Menu Admin",
+            ("Dashboard","Laporan", "Manajemen User", "Settings")
+        )
+        if menu == "Dashboard":
+            user_dashboard.show()
+        elif menu == "Laporan":
+            admin_laporan.show()
+        elif menu == "Manajemen User":
+            admin_manajemen_user.show()
+        elif menu == "Settings":
+            admin_settings.show()
+    elif role == "User":
+        menu = st.sidebar.radio(
+            "Menu User",
+            ("Dashboard", "Laporan", "Manajemen User", "Settings")
+        )
+        if menu == "Dashboard":
+            user_dashboard.show()
+        elif menu == "Laporan":
+            user_laporan.show()
+        elif menu == "Manajemen User":
+            user_katalog.show()
+        elif menu == "Settings":
+            user_settings.show()
     else:
-        cursor.execute("SELECT * FROM user WHERE Username=%s AND Password=%s", (username, password))
-    result = cursor.fetchone()
-    cursor.close()
-    conn.close()
-    return result
+        st.error("Role tidak dikenali. Silakan login kembali.")
 
-st.title("Login Page")
-
-role = st.selectbox("Login as", ["Admin", "User"])
-username = st.text_input("Username")
-password = st.text_input("Password", type="password")
-login_btn = st.button("Login")
-
-if login_btn:
-    user = check_login(username, password, role)
-    if user:
-        st.success(f"Welcome, {user['nama_admin'] if role == 'Admin' else user['nama_user']}!")
-        st.logo("data/geming.png", size="large")
-        st.title("Dashboard Sampahin")
-        st.metric("Total Pendapatan", 10000)
-        st.metric("Total Transaksi", 50000)
-    else:
-        st.error("Invalid username or password")
+    if st.button("Logout"):
+        st.session_state.loginstate = False
+        st.session_state.user = None
+        st.session_state.role = None
+        st.rerun()

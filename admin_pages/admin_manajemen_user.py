@@ -33,7 +33,7 @@ def show():
             cols[0].write(row['id_user'])
 
             # Update button
-            if cols[6].button("Update", key=f"update_{row['id_user']}"):
+            if cols[6].button("🔄", key=f"update_{row['id_user']}"):
                 conn = get_connection()
                 cursor = conn.cursor()
                 cursor.execute(
@@ -47,7 +47,7 @@ def show():
                 st.rerun()
 
             # Delete button
-            if cols[7].button("Delete", key=f"delete_{row['id_user']}"):
+            if cols[7].button("🗑️", key=f"delete_{row['id_user']}"):
                 conn = get_connection()
                 cursor = conn.cursor()
                 cursor.execute("DELETE FROM user WHERE id_user=%s", (row['id_user'],))

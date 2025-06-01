@@ -1,7 +1,7 @@
 import streamlit as st
 from login import login_form
 from admin_pages import admin_laporan, admin_manajemen_user, admin_settings
-from pages import user_katalog, user_dashboard, user_laporan, user_settings
+from users_pages import user_katalog, user_dashboard, user_laporan, user_settings
 
 if "loginstate" not in st.session_state:
     st.session_state.loginstate = False

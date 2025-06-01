@@ -1,6 +1,6 @@
 import streamlit as st
 from login import login_form
-from admin_pages import admin_laporan, admin_manajemen_user, admin_settings
+from admin_pages import admin_dashboard, admin_laporan, admin_manajemen_user, admin_settings
 from users_pages import user_katalog, user_dashboard, user_laporan, user_settings
 
 if "loginstate" not in st.session_state:
@@ -23,7 +23,7 @@ else:
             ("Dashboard","Laporan", "Manajemen User", "Settings")
         )
         if menu == "Dashboard":
-            user_dashboard.show()
+            admin_dashboard.show()
         elif menu == "Laporan":
             admin_laporan.show()
         elif menu == "Manajemen User":

@@ -1,33 +1,38 @@
 import streamlit as st
 from db import get_connection
 
-def get_admin_metrics(admin_id):
+def get_admin_metrics():
     conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute(
-        "SELECT COALESCE(SUM(total_pembayaran), 0) FROM transaksi_sampah WHERE id_user = %s", (admin_id,)
-    )
+    # Total Pendapatan
+    cursor.execute("SELECT COALESCE(SUM(total_pembayaran), 0) FROM transaksi_sampah")
     total_pendapatan = cursor.fetchone()[0]
 
-    cursor.execute(
-        "SELECT COUNT(*) FROM transaksi_sampah WHERE id_user = %s", (admin_id,)
-    )
-    total_transaksi = cursor.fetchone()[0]
+    # Total Barang
+    cursor.execute("SELECT COALESCE(SUM(total_sampah), 0) FROM transaksi_sampah")
+    total_barang = cursor.fetchone()[0]
+
+    # Total User
+    cursor.execute("SELECT COUNT(*) FROM user")
+    total_user = cursor.fetchone()[0]
+
     cursor.close()
     conn.close()
-    return total_pendapatan, total_transaksi
+    return total_pendapatan, total_barang, total_user
 
 def show():
-    admin = st.session_state.get("admin", {})
-    admin_id = admin.get("id_admin")
-    if admin_id is not None:
-        total_pendapatan, total_transaksi = get_admin_metrics(admin_id)
-        st.write("Halaman Laporan untuk Admin")
-        st.metric(
-            "Total Pendapatan",
-            "Rp. " + str("{:,}".format(int(total_pendapatan)).replace(",", ".")) + ",-"
-        )
-        st.metric("Total Transaksi", total_transaksi)
-    else:
-        st.warning("Admin ID tidak ditemukan.")
+    total_pendapatan, total_barang, total_user = get_admin_metrics()
+    st.write("Halaman Dashboard untuk Admin")
+    st.metric(
+        "Total Pendapatan",
+        "Rp. " + str("{:,}".format(int(total_pendapatan)).replace(",", ".")) + ",-"
+    )
+    st.metric(
+        "Total Barang",
+        str("{:,}".format(int(total_barang)).replace(",", ".")) + " kg"
+    )
+    st.metric(
+        "Total User",
+        str(total_user)
+    )

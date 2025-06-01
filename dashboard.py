@@ -33,7 +33,7 @@ else:
     elif role == "User":
         menu = st.sidebar.radio(
             "Menu User",
-            ("Dashboard", "Laporan", "Manajemen User", "Settings")
+            ("Dashboard", "Laporan", "Katalog", "Settings")
         )
         if menu == "Dashboard":
             user_dashboard.show()

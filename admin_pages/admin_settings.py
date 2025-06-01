@@ -5,22 +5,22 @@ st.logo("data/geming.png", size="large")
 
 def show():
     st.write("Halaman Settings untuk Admin")
-    admin = st.session_state.get("admin", {})
+    admin = st.session_state.get("user", {})  # Use "user" for admin session as in user_settings
     admin_id = admin.get("id_admin")
 
     if admin_id is not None:
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT id_admin, nama_admin, adminname, Password FROM admin WHERE id_admin = %s", (admin_id,))
+        cursor.execute("SELECT id_admin, nama_admin, Username, Password FROM admin WHERE id_admin = %s", (admin_id,))
         admin_data = cursor.fetchone()
         cursor.close()
         conn.close()
 
         if admin_data:
-            st.write("### Data admin")
-            st.write(f"**ID admin:** {admin_data['id_admin']}")
-            st.write(f"**Nama admin:** {admin_data['nama_admin']}")
-            st.write(f"**adminname:** {admin_data['adminname']}")
+            st.write("### Data Admin")
+            st.write(f"**ID Admin:** {admin_data['id_admin']}")
+            st.write(f"**Nama Admin:** {admin_data['nama_admin']}")
+            st.write(f"**Username:** {admin_data['Username']}")
 
             with st.expander("Ganti Password"):
                 new_password = st.text_input("Password Baru", type="password")
@@ -41,4 +41,4 @@ def show():
         else:
             st.warning("Data admin tidak ditemukan.")
     else:
-        st.warning("admin ID tidak ditemukan.")
+        st.warning("Admin ID tidak ditemukan.")

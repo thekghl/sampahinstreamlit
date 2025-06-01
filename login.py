@@ -1,6 +1,8 @@
 import streamlit as st
 from db import get_connection
 
+st.logo("data/geming.png", size="large")
+
 def check_login(username, password, role):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)

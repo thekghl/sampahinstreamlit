@@ -1,3 +1,6 @@
+# install streamlit first with `pip install streamlit`
+# run this script with `streamlit run dashboard.py`
+
 import streamlit as st
 from login import login_form
 from admin_pages import admin_dashboard, admin_laporan, admin_manajemen_user, admin_settings

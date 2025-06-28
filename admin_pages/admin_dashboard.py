@@ -25,7 +25,7 @@ def show():
     total_pendapatan, total_barang, total_user = get_admin_metrics()
     st.write("Halaman Dashboard untuk Admin")
     st.metric(
-        "Total Pendapatan",
+        "Total Dibayarkan",
         "Rp. " + str("{:,}".format(int(total_pendapatan)).replace(",", ".")) + ",-"
     )
     st.metric(

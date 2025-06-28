@@ -47,11 +47,15 @@ def show():
             # Update button per row
             if new_status != row['status']:
                 if cols[6].button("Update", key=f"update_{row['id_transaksi_sampah']}"):
+                    # Get current logged-in admin ID
+                    admin = st.session_state.get("user", {})
+                    admin_id = admin.get("id_admin")
+                    
                     conn = get_connection()
                     cursor = conn.cursor()
                     cursor.execute(
-                        "UPDATE transaksi_sampah SET status = %s WHERE id_transaksi_sampah = %s",
-                        (new_status, row['id_transaksi_sampah'])
+                        "UPDATE transaksi_sampah SET status = %s, id_admin = %s WHERE id_transaksi_sampah = %s",
+                        (new_status, admin_id, row['id_transaksi_sampah'])
                     )
                     conn.commit()
                     cursor.close()

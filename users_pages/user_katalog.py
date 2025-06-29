@@ -9,13 +9,13 @@ def show():
         jenis_sampah = st.selectbox("Jenis Sampah", ["logam", "plastik", "karet", "kertas"])
         total_sampah = st.number_input("Total Sampah (kg)", min_value=0.0, step=0.1)
         if jenis_sampah == "logam":
-            total_harga = total_sampah * 2160
+            total_harga = total_sampah * 21600
         elif jenis_sampah == "plastik":
-            total_harga = total_sampah * 50
+            total_harga = total_sampah * 5000
         elif jenis_sampah == "karet":
-            total_harga = total_sampah * 1400
+            total_harga = total_sampah * 14000
         elif jenis_sampah == "kertas":
-            total_harga = total_sampah * 3000
+            total_harga = total_sampah * 15000
         formatted_total = f"{total_harga:,}".replace(",", ".")
         st.write(f"Total Harga Sampah: Rp. {formatted_total}")
         

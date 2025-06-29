@@ -71,7 +71,9 @@ def show():
         telp = st.text_input("Telp")
         submitted = st.form_submit_button("Tambah User")
         if submitted:
-            if nama_user and username and alamat and password and telp:
+            if len(telp) > 13:
+                st.warning("Nomor telepon tidak boleh lebih dari 13 karakter.")
+            elif nama_user and username and alamat and password and telp:
                 conn = get_connection()
                 cursor = conn.cursor()
                 cursor.execute(

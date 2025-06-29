@@ -5,8 +5,9 @@ def get_user_metrics(user_id):
     conn = get_connection()
     cursor = conn.cursor()
 
+    # Only sum total_pembayaran where status is 'selesai'
     cursor.execute(
-        "SELECT COALESCE(SUM(total_pembayaran), 0) FROM transaksi_sampah WHERE id_user = %s", (user_id,)
+        "SELECT COALESCE(SUM(total_pembayaran), 0) FROM transaksi_sampah WHERE id_user = %s AND status = 'selesai'", (user_id,)
     )
     total_pendapatan = cursor.fetchone()[0]
 

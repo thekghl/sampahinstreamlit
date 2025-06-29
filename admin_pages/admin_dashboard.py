@@ -5,8 +5,8 @@ def get_admin_metrics():
     conn = get_connection()
     cursor = conn.cursor()
 
-    # Total Pendapatan
-    cursor.execute("SELECT COALESCE(SUM(total_pembayaran), 0) FROM transaksi_sampah")
+    # Total Pendapatan hanya transaksi dengan status 'selesai'
+    cursor.execute("SELECT COALESCE(SUM(total_pembayaran), 0) FROM transaksi_sampah WHERE status = 'selesai'")
     total_pendapatan = cursor.fetchone()[0]
 
     # Total Barang
